@@ -4,7 +4,7 @@
 
 
 
-const createAudioContext = () => new (window.AudioContext || (window as any).webkitAudioContext)();
+const createAudioContext = () => new (window.AudioContext || ((window as unknown) as any).webkitAudioContext)();
 
 const getAudioContext = (() => {
     const audioContext = createAudioContext();

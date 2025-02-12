@@ -1,6 +1,5 @@
 
 import { test, expect, vi } from 'vitest';
-import { Scale, Interval, Note, Range } from 'tonal';
 import nextChallenge from './nextChallenge';
 import * as randomNote from './randomNote';
 

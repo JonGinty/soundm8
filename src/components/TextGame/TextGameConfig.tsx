@@ -1,4 +1,4 @@
-import { Checkbox, Fieldset, Input, Select, Slider, Stack, Switch } from "@mantine/core";
+import { Fieldset, Input, Select, Slider, Stack, Switch } from "@mantine/core";
 import TextGameSettings from "./TextGame.settings";
 import NoteRange from "../NoteRange/NoteRange";
 
