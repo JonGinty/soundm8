@@ -4,7 +4,7 @@ import { AppShell, createTheme, MantineProvider, Burger, useMantineTheme, Group,
 import TextGame from './components/TextGame/TextGame'
 import { useClickableToggle } from './utils/useToggle'
 import HeaderLogo from './components/Logo/HeaderLogo'
-import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Link, HashRouter } from 'react-router-dom'
 import TextGameStartPage from './components/TextGame/TextGameStartPage'
 import SimpleNavLink from './components/SimpleNavLink'
 import HomePage from './components/HomePage'
@@ -18,7 +18,7 @@ function App() {
   return (
     <>
       <MantineProvider defaultColorScheme='light'>
-        <BrowserRouter>
+        <HashRouter>
           <AppShell
             header={{ height: 60 }}
             navbar={{
@@ -52,7 +52,7 @@ function App() {
               <SimpleNavLink to="/AudioGame" label='AudioGame' />
             </AppShell.Navbar>
           </AppShell>
-        </BrowserRouter>
+        </HashRouter>
       </MantineProvider>
     </>
   )
