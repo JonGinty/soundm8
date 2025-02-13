@@ -2,7 +2,7 @@ import { RangeSlider, RangeSliderValue, Slider } from "@mantine/core";
 import { useState } from "react";
 import { note, Range, Scale } from "tonal"
 
-const NoteRange = ({lowest, highest, lowChange, highChange}: NoteRangeProps) => {
+const NoteRange = ({lowest, highest, lowChange, highChange, id}: NoteRangeProps) => {
     //const noteSet = new Set<string>();
     const noteSet: string[] = [];
     Array(10).fill(0).map((v, i) => Scale.get(`C${i} chromatic`).notes).forEach(s => s.forEach(n => noteSet.push(n)));
@@ -22,11 +22,12 @@ const NoteRange = ({lowest, highest, lowChange, highChange}: NoteRangeProps) => 
     }
 
     return (<>  
-        <RangeSlider step={1} max={max} min={min} value={[lowVal, highVal]} minRange={2} label={label} onChange={doChange}></RangeSlider>
+        <RangeSlider id={id} step={1} max={max} min={min} value={[lowVal, highVal]} minRange={2} label={label} onChange={doChange}></RangeSlider>
     </>)
 }
 
 export type NoteRangeProps = {
+    id?: string;
     lowest: string;
     highest: string;
     lowChange: (val: string) => void
