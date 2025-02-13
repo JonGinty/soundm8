@@ -8,7 +8,9 @@ const TextGameStartPage = () => {
     const [settings, setSettings] = useState<TextGameSettings>({ ...defaultSettings });
     const [playing, setPlaying] = useState<boolean>(false);
 
-    return playing ? (<TextGame {...settings} ></TextGame>) : (
+
+
+    return playing ? (<TextGame {...settings} backClicked={() => setPlaying(false)} ></TextGame>) : (
         
         <>
             <Stack>

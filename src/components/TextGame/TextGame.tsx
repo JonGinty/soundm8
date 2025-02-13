@@ -2,11 +2,12 @@ import { useState } from 'react';
 import nextChallenge from '../../engine/nextChallenge';
 import Notation from '../Notation/Notation';
 import styles from './TextGame.module.css'
-import { Button, TextInput, Stack, Flex } from '@mantine/core';
+import { Button, TextInput, Stack, Flex, ActionIcon } from '@mantine/core';
 import synthesize, { synthesizeSequence } from '../../engine/audio/synthesize';
 import TextGameSettings from './TextGame.settings';
+import { IconArrowLeft } from '@tabler/icons-react';
 
-const TextGame = ({ mode, highestNote, lowestNote, noteCount, maxInterval }: TextGameSettings) => {
+const TextGame = ({ mode, highestNote, lowestNote, noteCount, maxInterval, sfx, backClicked }: TextGameSettings & Back) => {
     const [seq, setSeq] = useState<string[]>([]);
     const [input, setInput] = useState<string>("");
     const [correct, setCorrect] = useState<string>("");
@@ -16,7 +17,7 @@ const TextGame = ({ mode, highestNote, lowestNote, noteCount, maxInterval }: Tex
     // const highestNote = mode === "treble" ? "C6" : "C4";
     // const lowestNote = mode === "treble" ? "C4" : "C2";
 
-    const soundOn = true;
+    const soundOn = sfx;
 
     const next = async () => {
         const challenge = await nextChallenge({
@@ -66,25 +67,33 @@ const TextGame = ({ mode, highestNote, lowestNote, noteCount, maxInterval }: Tex
     }
 
     return (
-        <div style={{display: "flex", justifyContent: "center", textAlign:"center"}}>
-            <Stack style={{maxWidth: "200px"}}>
-                <h1>Text Mode</h1>
-                <Stack style={{ "flexGrow": 1 }}>
-                    <Notation sequence={seq} clef={mode} />
-                    <p>
-                        <span style={{ color: "#11cc88" }}>{correct}</span>
-                        <span style={{ color: "red" }}>{incorrect}</span>
-                        {/* just allocating the space here so it doesn't grow */}
-                        <span style={{ visibility: "hidden" }}>|</span></p>
-                    <p>Score: {score}</p>
+        <>
+            <ActionIcon variant='subtle' onClick={() => backClicked()}><IconArrowLeft></IconArrowLeft></ActionIcon>
+            <div style={{ display: "flex", justifyContent: "center", textAlign: "center" }}>
+                <Stack style={{ maxWidth: "200px" }}>
+                    <Stack style={{ "flexGrow": 1 }}>
+                        <p>Score: {score}</p>
+                        <Notation sequence={seq} clef={mode} />
+                        <p>
+                            <span style={{ color: "#11cc88" }}>{correct}</span>
+                            <span style={{ color: "red" }}>{incorrect}</span>
+                            {/* just allocating the space here so it doesn't grow */}
+                            <span style={{ visibility: "hidden" }}>|</span>
+                        </p>
+                    </Stack>
+                    <Stack>
+                        <TextInput type="text" placeholder='type your answer here' value={input} onChange={(e) => setInput(e.target.value)} />
+                        <Button fullWidth variant='outline' onClick={skip}>skip (-10)</Button>
+                    </Stack>
                 </Stack>
-                <Stack>
-                    <TextInput type="text" placeholder='type your answer here' value={input} onChange={(e) => setInput(e.target.value)} />
-                    <Button fullWidth variant='outline' onClick={skip}>skip (-10)</Button>
-                </Stack>
-            </Stack>
-        </div>
+            </div>
+        </>
     )
+}
+
+
+type Back = {
+    backClicked: () => void;
 }
 
 export default TextGame;
