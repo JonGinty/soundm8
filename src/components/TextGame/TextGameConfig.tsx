@@ -2,6 +2,7 @@ import { Button, Fieldset, Group, Input, Select, Slider, Stack, Switch } from "@
 import TextGameSettings from "./TextGame.settings";
 import NoteRange from "../NoteRange/NoteRange";
 import { synthesizeSequence } from "../../engine/audio/synthesize";
+import calculateLedgerLines from "../../engine/notation/calculateLedgerLines";
 
 
 const TextGameConfig = ({ settings, handleChange }: TextGameConfigProps) => {
@@ -21,10 +22,25 @@ const TextGameConfig = ({ settings, handleChange }: TextGameConfigProps) => {
             alert("Error playing sound: " + e);
         }
     }
+
+    const ledgerWarning = () => {
+
+        const warnings: string[] = [];
+        if (calculateLedgerLines(settings.highestNote, settings.mode) > 2) warnings.push(`${settings.highestNote} has ${calculateLedgerLines(settings.highestNote, settings.mode)} ledger lines`);
+        if (calculateLedgerLines(settings.lowestNote, settings.mode) > 2) warnings.push(`${settings.lowestNote} has ${calculateLedgerLines(settings.lowestNote, settings.mode)} ledger lines`);
+
+        if (warnings.length) {
+            return {
+                description: `Warning: ${warnings.join(" and ")} in ${settings.mode} clef`
+            }
+        }
+        return {};
+    }
     
     return (
         <Fieldset m="xs" legend="Settings">
             <Stack>
+                <Select label="Clef" data={["treble", "bass"]} value={settings.mode} onChange={makeChange("mode")}></Select>
                 <Select label="Scale" data={["C major", "A minor"]} value={settings.scale} onChange={makeChange("scale")}></Select>
                 <Input.Wrapper label={"Notes per round: " + settings.noteCount}><Slider value={settings.noteCount} max={10} min={1} onChange={makeChange("noteCount")}></Slider></Input.Wrapper>
                 <Input.Wrapper label="Sound effects (may be loud!)">
@@ -33,7 +49,10 @@ const TextGameConfig = ({ settings, handleChange }: TextGameConfigProps) => {
                         <Button variant="subtle" onClick={() => testSfx()}>Test</Button>
                     </Group>
                 </Input.Wrapper>
-                <Input.Wrapper label={`Note range: (${settings.lowestNote} - ${settings.highestNote})`}><NoteRange lowest={settings.lowestNote} highest={settings.highestNote} lowChange={makeChange("lowestNote")} highChange={makeChange("highestNote")}></NoteRange></Input.Wrapper>
+                {/* TODO: this would maybe be better if we just select a number of ledger lines here instead of a note range */}
+                <Input.Wrapper label={`Note range: (${settings.lowestNote} - ${settings.highestNote})`} {...ledgerWarning()}>
+                    <NoteRange lowest={settings.lowestNote} highest={settings.highestNote} lowChange={makeChange("lowestNote")} highChange={makeChange("highestNote")}></NoteRange>
+                </Input.Wrapper>
                 <Input.Wrapper label={"Max interval between notes: " + settings.maxInterval}><Slider value={settings.maxInterval} max={100} min={1} onChange={makeChange("maxInterval")}></Slider></Input.Wrapper>
             </Stack>
         </Fieldset>
