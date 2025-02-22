@@ -1,18 +1,11 @@
-
-
-
-
-
-
-const createAudioContext = () => new (window.AudioContext || ((window as unknown) as any).webkitAudioContext)();
+const createAudioContext = () =>
+  new (window.AudioContext ||
+    (window as unknown as { webkitAudioContext: AudioContext })
+      .webkitAudioContext)()
 
 const getAudioContext = (() => {
-    const audioContext = createAudioContext();
-    return () => audioContext;
-})();
+  const audioContext = createAudioContext()
+  return () => audioContext
+})()
 
-
-export default getAudioContext;
-
-
-
+export default getAudioContext

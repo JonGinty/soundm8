@@ -7,5 +7,5 @@
   "compilerOptions": {
     "strict": true,
     "types": ["vitest", "@testing-library/jest-dom"]
-  },
+  }
 }
