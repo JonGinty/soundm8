@@ -1,5 +1,5 @@
 import { Button, Fieldset, Group, Input, Select, Slider, Stack, Switch } from "@mantine/core";
-import TextGameSettings from "./TextGame.settings";
+import TextGameSettings, { TextGameMode, TextGameScale } from "./TextGame.settings";
 import NoteRange from "../NoteRange/NoteRange";
 import { synthesizeSequence } from "../../engine/audio/synthesize";
 import calculateLedgerLines from "../../engine/notation/calculateLedgerLines";
@@ -9,13 +9,13 @@ import SliderWithLabel from "../SliderWithLabel";
 
 const TextGameConfig = ({ settings, handleChange }: TextGameConfigProps) => {
 
-    const makeChange = (setting: keyof TextGameSettings) => {
-        return (v: any) => {
-            const val: Partial<TextGameSettings> = {};
-            val[setting] = v;
-            handleChange({ ...settings, ...val })
-        }
-    }
+    // const makeChange = (setting: keyof TextGameSettings) => {
+    //     return (v: any) => {
+    //         const val: Partial<TextGameSettings> = {};
+    //         val[setting] = v;
+    //         handleChange({ ...settings, ...val })
+    //     }
+    // }
 
     const testSfx = async () => {
         try {
@@ -46,9 +46,9 @@ const TextGameConfig = ({ settings, handleChange }: TextGameConfigProps) => {
     return (
         <Fieldset m="xs" legend="Settings">
             <Stack>
-                <Select label="Clef" data={["treble", "bass"]} value={settings.mode} onChange={makeChange("mode")}></Select>
-                <Select label="Scale" data={["C major", "A minor"]} value={settings.scale} onChange={makeChange("scale")}></Select>
-                <SliderWithLabel wrapper={{label: "Notes per round: " + settings.noteCount}} value={settings.noteCount} max={10} min={1} onChange={makeChange("noteCount")}></SliderWithLabel>
+                <Select label="Clef" data={["treble", "bass"]} value={settings.mode} onChange={(v) => handleChange({mode: v as TextGameMode})}></Select>
+                <Select label="Scale" data={["C major", "A minor"]} value={settings.scale} onChange={(v) => handleChange({scale: v as TextGameScale})}></Select>
+                <SliderWithLabel wrapper={{label: "Notes per round: " + settings.noteCount}} value={settings.noteCount} max={10} min={1} onChange={(v) => handleChange({noteCount: v})}></SliderWithLabel>
                 <Input.Wrapper id={sfxSwitchId} label="Sound effects (may be loud!)">
                     <Group>
                         <Switch id={sfxSwitchId} checked={settings.sfx} onChange={() => handleChange({...settings, sfx: !settings.sfx})} ></Switch>
@@ -57,9 +57,9 @@ const TextGameConfig = ({ settings, handleChange }: TextGameConfigProps) => {
                 </Input.Wrapper>
                 {/* TODO: this would maybe be better if we just select a number of ledger lines here instead of a note range */}
                 <Input.Wrapper id={noteRangeId} label={`Note range: (${settings.lowestNote} - ${settings.highestNote})`} {...ledgerWarning()}>
-                    <NoteRange id={noteRangeId} lowest={settings.lowestNote} highest={settings.highestNote} lowChange={makeChange("lowestNote")} highChange={makeChange("highestNote")}></NoteRange>
+                    <NoteRange id={noteRangeId} lowest={settings.lowestNote} highest={settings.highestNote} lowChange={(v) => handleChange({lowestNote: v})} highChange={(v) => handleChange({highestNote: v})}></NoteRange>
                 </Input.Wrapper>
-                <SliderWithLabel wrapper={{label: "Max interval between notes: " + settings.maxInterval }} value={settings.maxInterval} max={100} min={1} onChange={makeChange("maxInterval")}></SliderWithLabel>
+                <SliderWithLabel wrapper={{label: "Max interval between notes: " + settings.maxInterval }} value={settings.maxInterval} max={100} min={1} onChange={(v => handleChange({maxInterval: v}))}></SliderWithLabel>
             </Stack>
         </Fieldset>
     )
@@ -67,7 +67,7 @@ const TextGameConfig = ({ settings, handleChange }: TextGameConfigProps) => {
 
 type TextGameConfigProps = {
     settings: TextGameSettings,
-    handleChange: (newSettings: TextGameSettings) => void
+    handleChange: (newSettings: Partial<TextGameSettings>) => void
 }
 
 export default TextGameConfig;

@@ -14,7 +14,7 @@ const TextGameStartPage = () => {
         
         <>
             <Stack>
-                <TextGameConfig settings={settings} handleChange={(s) => setSettings(s)}></TextGameConfig>
+                <TextGameConfig settings={settings} handleChange={(s) => setSettings(prev => ({...prev, ...s}))}></TextGameConfig>
                 <Button onClick={() => setPlaying(true)}>Start!</Button>
             </Stack>
         </>

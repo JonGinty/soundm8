@@ -28,7 +28,6 @@ const TextGame = ({ mode, highestNote, lowestNote, noteCount, maxInterval, sfx, 
             maxInterval
         })
 
-
         setCorrect("");
         setIncorrect("");
         setInput("");
@@ -44,7 +43,7 @@ const TextGame = ({ mode, highestNote, lowestNote, noteCount, maxInterval, sfx, 
         if (isSameNote(input, seq[correct.length])) {
             setCorrect(correct + input);
             setIncorrect("");
-            setScore(score + 10);
+            setScore(prev => prev + 10);
             if (soundOn) synthesize(seq[correct.length], 200)
             if (correct.length >= seq.length - 1) {
                 next();
@@ -62,7 +61,7 @@ const TextGame = ({ mode, highestNote, lowestNote, noteCount, maxInterval, sfx, 
     }
 
     const skip = () => {
-        setScore(score - 10);
+        setScore(prev => prev - 10);
         next();
     }
 
