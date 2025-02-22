@@ -1,18 +1,8 @@
 import './App.css'
-import {
-  AppShell,
-  MantineProvider,
-  Burger,
-  Group,
-  Text,
-} from '@mantine/core'
+import { AppShell, MantineProvider, Burger, Group, Text } from '@mantine/core'
 import { useClickableToggle } from './utils/useToggle'
 import HeaderLogo from './components/Logo/HeaderLogo'
-import {
-  Route,
-  Routes,
-  HashRouter,
-} from 'react-router-dom'
+import { Route, Routes, HashRouter } from 'react-router-dom'
 import TextGameStartPage from './components/TextGame/TextGameStartPage'
 import SimpleNavLink from './components/SimpleNavLink'
 import HomePage from './components/HomePage'

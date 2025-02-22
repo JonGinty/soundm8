@@ -1,7 +1,4 @@
-import {
-  IconMusic,
-  IconPlayCard8,
-} from '@tabler/icons-react'
+import { IconMusic, IconPlayCard8 } from '@tabler/icons-react'
 
 export default function HeaderLogo() {
   return (

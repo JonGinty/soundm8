@@ -11,7 +11,8 @@ export default function SliderWithLabel({
   wrapper,
   ...sliderProps
 }: SliderWithLabelProps) {
-  const idObj = id ? { id } : { id: useId() }
+  const reactId = useId()
+  const idObj = id ? { id } : { id: reactId }
   return (
     <InputWrapper {...wrapper} {...idObj}>
       <Slider {...sliderProps} {...idObj}></Slider>

@@ -1,5 +1,7 @@
 const createAudioContext = () =>
-  new (window.AudioContext || (window as unknown as any).webkitAudioContext)()
+  new (window.AudioContext ||
+    (window as unknown as { webkitAudioContext: AudioContext })
+      .webkitAudioContext)()
 
 const getAudioContext = (() => {
   const audioContext = createAudioContext()

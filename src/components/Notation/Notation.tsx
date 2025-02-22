@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useId } from 'react'
 import VexFlow from 'vexflow'
 
 // I may ditch vexflow / easyscore for a different library, had to do some hacky stuff here to make this work
@@ -12,7 +12,8 @@ export default function Notation({
   clef: string
 }) {
   const container = useRef<HTMLDivElement>(null)
-  const id = 'score-' + crypto.randomUUID()
+
+  const id = useId()
 
   // TODO: centering this is kind of awkward seeing as we don't control how wide the stave itself is
   const width = 200
@@ -40,12 +41,15 @@ export default function Notation({
       .addClef(clef)
 
     vf.draw()
+
+    const element = container.current
+
     return () => {
-      if (container.current) {
-        container.current.innerHTML = ''
+      if (element) {
+        element.innerHTML = ''
       }
     }
-  }, [sequence])
+  }, [sequence, clef, id])
 
   return (
     <>

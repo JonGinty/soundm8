@@ -19,7 +19,7 @@ export default tseslint.config(
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       'unused-imports': unusedImports,
-      'prettier': prettier,
+      prettier: prettier,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -27,7 +27,7 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
-      "unused-imports/no-unused-imports": "warn", // Remove unused imports
+      'unused-imports/no-unused-imports': 'warn', // Remove unused imports
     },
   },
 )
