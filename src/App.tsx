@@ -1,19 +1,28 @@
 import './App.css'
-import MyComponent from './components/MyComponent'
-import { AppShell, createTheme, MantineProvider, Burger, useMantineTheme, Group, NavLink, Text } from '@mantine/core'
-import TextGame from './components/TextGame/TextGame'
+
+import { AppShell,  MantineProvider, Burger,  Group,  Text } from '@mantine/core'
 import { useClickableToggle } from './utils/useToggle'
 import HeaderLogo from './components/Logo/HeaderLogo'
-import { BrowserRouter, Route, Routes, Link, HashRouter } from 'react-router-dom'
+import {  Route, Routes,  HashRouter, useLocation } from 'react-router-dom'
 import TextGameStartPage from './components/TextGame/TextGameStartPage'
 import SimpleNavLink from './components/SimpleNavLink'
 import HomePage from './components/HomePage'
+import { useState, useEffect } from 'react'
 
 
 function App() {
 
+  const location = useLocation();
+  const [defaultMenuState, setDefaultMenuState] = useState<boolean>();
 
-  const [opened, toggle] = useClickableToggle();
+
+
+  useEffect(() => {
+    setDefaultMenuState(false); 
+  }, [location.search]); // Use location.search as dependency
+
+
+  const [opened, toggle] = useClickableToggle(defaultMenuState);
 
   return (
     <>
