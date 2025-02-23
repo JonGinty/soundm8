@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import Notation from './Notation'
-import { test, expect, vi } from 'vitest'
+import { test, expect } from 'vitest'
 
 const getSvg = (
   el: HTMLElement,

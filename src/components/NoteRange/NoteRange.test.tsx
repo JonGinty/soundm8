@@ -1,4 +1,4 @@
-import { screen, fireEvent } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { renderMantine as render } from '../../utils/test-utils'
 import NoteRange from './NoteRange'
 import { test, expect, vi } from 'vitest'
