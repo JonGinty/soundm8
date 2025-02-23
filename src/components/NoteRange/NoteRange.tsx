@@ -8,7 +8,6 @@ const NoteRange = ({
   highChange,
   id,
 }: NoteRangeProps) => {
-  //const noteSet = new Set<string>();
   const noteSet: string[] = []
   Array(10)
     .fill(0)

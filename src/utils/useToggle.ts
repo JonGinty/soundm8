@@ -11,7 +11,7 @@ export default function useToggle(
       if (typeof value === 'boolean') {
         if (val !== value) setVal(value)
       } else {
-        setVal(!val)
+        setVal(prev => !prev)
       }
     },
   ]
