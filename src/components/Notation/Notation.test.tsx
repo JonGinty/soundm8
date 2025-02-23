@@ -2,20 +2,23 @@ import { render, screen } from '@testing-library/react'
 import Notation from './Notation'
 import { test, expect, vi } from 'vitest'
 
-const getSvg = (el: HTMLElement, errorIfMultiple: boolean = true): SVGSVGElement => {
-    const firstSvg = el.querySelector('svg')
-    
-    expect(firstSvg).toBeInTheDocument()
-    if (errorIfMultiple) {
-        expect(el.querySelectorAll('svg').length).toBe(1)
-    }
-    expect(firstSvg).toBeInstanceOf(SVGSVGElement)
-    return firstSvg as SVGSVGElement
+const getSvg = (
+  el: HTMLElement,
+  errorIfMultiple: boolean = true,
+): SVGSVGElement => {
+  const firstSvg = el.querySelector('svg')
+
+  expect(firstSvg).toBeInTheDocument()
+  if (errorIfMultiple) {
+    expect(el.querySelectorAll('svg').length).toBe(1)
+  }
+  expect(firstSvg).toBeInstanceOf(SVGSVGElement)
+  return firstSvg as SVGSVGElement
 }
 
 const countNotes = (svg: SVGSVGElement) => {
-    const notes = svg.querySelectorAll('.vf-stavenote')
-    return notes.length
+  const notes = svg.querySelectorAll('.vf-stavenote')
+  return notes.length
 }
 
 test('renders Notation component without crashing', () => {
