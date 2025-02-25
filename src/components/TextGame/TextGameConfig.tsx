@@ -8,6 +8,7 @@ import {
   Switch,
 } from '@mantine/core'
 import TextGameSettings, {
+  TextGameInputMode,
   TextGameMode,
   TextGameScale,
 } from './TextGame.settings'
@@ -18,14 +19,6 @@ import { useId } from 'react'
 import SliderWithLabel from '../SliderWithLabel'
 
 const TextGameConfig = ({ settings, handleChange }: TextGameConfigProps) => {
-  // const makeChange = (setting: keyof TextGameSettings) => {
-  //     return (v: any) => {
-  //         const val: Partial<TextGameSettings> = {};
-  //         val[setting] = v;
-  //         handleChange({ ...settings, ...val })
-  //     }
-  // }
-
   const testSfx = async () => {
     try {
       await synthesizeSequence(['C4', 'E4', 'G4', 'C5'], 100)
@@ -70,6 +63,25 @@ const TextGameConfig = ({ settings, handleChange }: TextGameConfigProps) => {
           data={['C major', 'A minor']}
           value={settings.scale}
           onChange={v => handleChange({ scale: v as TextGameScale })}
+        ></Select>
+        <Select
+          label="Input mode"
+          data={[
+            {
+              label: 'Text Box',
+              value: 'text',
+            },
+            {
+              label: 'Piano Keyboard with Letters',
+              value: 'keyboardletters',
+            },
+            {
+              label: 'Empty Piano Keyboard',
+              value: 'keyboard',
+            },
+          ]}
+          value={settings.inputMode}
+          onChange={v => handleChange({ inputMode: v as TextGameInputMode })}
         ></Select>
         <SliderWithLabel
           wrapper={{ label: 'Notes per round: ' + settings.noteCount }}
