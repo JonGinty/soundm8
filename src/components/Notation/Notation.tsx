@@ -53,7 +53,7 @@ export default function Notation({
 
   return (
     <>
-      <div ref={container} id={id}></div>
+      <div ref={container} id={id} data-testid="notation-container"></div>
     </>
   )
 }
