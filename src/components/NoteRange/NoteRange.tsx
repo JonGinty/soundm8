@@ -11,7 +11,7 @@ const NoteRange = ({
   const noteSet: string[] = []
   Array(10)
     .fill(0)
-    .map((v, i) => Scale.get(`C${i} chromatic`).notes)
+    .map((_, i) => Scale.get(`C${i} chromatic`).notes)
     .forEach(s => s.forEach(n => noteSet.push(n)))
 
   const min = 0
