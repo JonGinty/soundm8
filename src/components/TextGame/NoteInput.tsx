@@ -76,8 +76,30 @@ const PianoNoteInput = ({ handleGuess, inputMode }: NoteInputProps) => {
     firstKeyRef.current?.offsetWidth,
     viewportWidth,
     octaves,
-    whiteKeys.length
+    whiteKeys.length,
   ])
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const key = event.key
+      const note = key.toUpperCase()
+      if (whiteKeys.includes(note)) {
+        if (key === note)
+          handleGuess(note + '#') // sharp
+        else handleGuess(note) // natural
+      } else if (note === 'Z') {
+        handleGuess('B') // z is easier to reach than B so we'll allow it
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [whiteKeys, handleGuess])
+
+  // todo: midi?
 
   return (
     <div
