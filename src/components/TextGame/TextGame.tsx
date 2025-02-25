@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import nextChallenge from '../../engine/nextChallenge'
 import Notation from '../Notation/Notation'
-import { Button, TextInput, Stack, ActionIcon } from '@mantine/core'
+import { Button, Stack, ActionIcon } from '@mantine/core'
 import synthesize, { synthesizeSequence } from '../../engine/audio/synthesize'
 import TextGameSettings from './TextGame.settings'
 import { IconArrowLeft } from '@tabler/icons-react'
+import NoteInput from './NoteInput'
 
 const TextGame = ({
   mode,
@@ -14,15 +15,12 @@ const TextGame = ({
   maxInterval,
   sfx,
   backClicked,
+  inputMode,
 }: TextGameSettings & Back) => {
   const [seq, setSeq] = useState<string[]>([])
-  const [input, setInput] = useState<string>('')
   const [correct, setCorrect] = useState<string>('')
   const [incorrect, setIncorrect] = useState<string>('')
   const [score, setScore] = useState<number>(0)
-
-  // const highestNote = mode === "treble" ? "C6" : "C4";
-  // const lowestNote = mode === "treble" ? "C4" : "C2";
 
   const soundOn = sfx
 
@@ -37,16 +35,14 @@ const TextGame = ({
 
     setCorrect('')
     setIncorrect('')
-    setInput('')
     setSeq(challenge)
-    //await synthesizeSequence(challenge, 400);
   }
 
   const isSameNote = (userInput: string, tonalNote: string) => {
     return userInput.toUpperCase() === tonalNote[0]
   }
 
-  if (input) {
+  const handleGuess = (input: string) => {
     if (isSameNote(input, seq[correct.length])) {
       setCorrect(correct + input)
       setIncorrect('')
@@ -60,7 +56,6 @@ const TextGame = ({
       setIncorrect(input)
       if (soundOn) synthesizeSequence(['G4', 'C3', 'G3', 'C2'], 100)
     }
-    setInput('')
   }
 
   if (!seq?.length) {
@@ -96,12 +91,7 @@ const TextGame = ({
             </p>
           </Stack>
           <Stack>
-            <TextInput
-              type="text"
-              placeholder="type your answer here"
-              value={input}
-              onChange={e => setInput(e.target.value)}
-            />
+            <NoteInput handleGuess={handleGuess} inputMode={inputMode} />
             <Button fullWidth variant="outline" onClick={skip}>
               skip (-10)
             </Button>

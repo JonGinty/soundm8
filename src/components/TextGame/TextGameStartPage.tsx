@@ -34,6 +34,7 @@ const defaultSettings: TextGameSettings = {
   noteCount: 2,
   maxInterval: 12,
   scale: 'C major',
+  inputMode: 'keyboardletters',
 }
 
 export default TextGameStartPage
