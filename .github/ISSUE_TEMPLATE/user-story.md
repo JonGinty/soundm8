@@ -23,6 +23,6 @@ So that [benefit or reason].
  - Screenshots or examples, if applicable.
  - Technical notes or constraints.
 
-Possible Implementation Approach (Optional)
+# Possible Implementation Approach (Optional)
  - Suggest a high-level approach if useful.
  - List any dependencies or risks.
