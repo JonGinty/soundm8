@@ -13,9 +13,12 @@ export default function SliderWithLabel({
 }: SliderWithLabelProps) {
   const reactId = useId()
   const idObj = id ? { id } : { id: reactId }
+  const thumbLabel =
+    sliderProps.thumbLabel ??
+    (typeof wrapper.label === 'string' ? wrapper.label : undefined)
   return (
     <InputWrapper {...wrapper} {...idObj}>
-      <Slider {...sliderProps} {...idObj}></Slider>
+      <Slider thumbLabel={thumbLabel} {...sliderProps} {...idObj}></Slider>
     </InputWrapper>
   )
 }

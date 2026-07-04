@@ -2,7 +2,7 @@ import { Scale, Interval } from 'tonal'
 import randomNote from './randomNote'
 
 export default async function nextChallenge(ops: NextChallengeOptions) {
-  //const scale = Scale.get(ops.scale)
+  const { maxInterval } = ops
   const availableNotes = Scale.rangeOf(ops.scale)(
     ops.lowestNote,
     ops.highestNote,
@@ -10,18 +10,13 @@ export default async function nextChallenge(ops: NextChallengeOptions) {
   const result: string[] = []
 
   for (let i = 0; i < ops.noteCount; i++) {
-    let note = randomNote(availableNotes)
+    const previousNote = result[i - 1]
+    const candidates =
+      previousNote && maxInterval
+        ? availableNotes.filter(n => isInRange(previousNote, n, maxInterval))
+        : availableNotes
 
-    let panic = 0
-    while (
-      i > 0 &&
-      ops.maxInterval &&
-      (panic++ > 100 || !isInRange(result[i - 1], note, ops.maxInterval))
-    ) {
-      note = randomNote(availableNotes)
-    }
-
-    result.push(note)
+    result.push(randomNote(candidates.length ? candidates : availableNotes))
   }
 
   return result

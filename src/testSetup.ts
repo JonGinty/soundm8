@@ -26,3 +26,18 @@ class ResizeObserver {
 }
 
 window.ResizeObserver = ResizeObserver
+
+class MockAudioContext {
+  currentTime = 0
+  destination = {} as AudioDestinationNode
+  resume = vi.fn(() => Promise.resolve())
+  createOscillator = vi.fn(() => ({
+    type: 'sine',
+    frequency: { setValueAtTime: vi.fn() },
+    connect: vi.fn(),
+    start: vi.fn(),
+    stop: vi.fn(),
+  }))
+}
+
+window.AudioContext = MockAudioContext as unknown as typeof AudioContext

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import nextChallenge from '../../engine/nextChallenge'
 import Notation from '../Notation/Notation'
 import { Button, Stack, ActionIcon } from '@mantine/core'
@@ -24,7 +24,7 @@ const TextGame = ({
 
   const soundOn = sfx
 
-  const next = async () => {
+  const next = useCallback(async () => {
     const challenge = await nextChallenge({
       scale: 'C major',
       highestNote,
@@ -36,13 +36,39 @@ const TextGame = ({
     setCorrect('')
     setIncorrect('')
     setSeq(challenge)
-  }
+  }, [highestNote, lowestNote, noteCount, maxInterval])
+
+  useEffect(() => {
+    if (seq.length) return
+
+    let ignore = false
+    nextChallenge({
+      scale: 'C major',
+      highestNote,
+      lowestNote,
+      noteCount,
+      maxInterval,
+    }).then(challenge => {
+      if (ignore) return
+      setCorrect('')
+      setIncorrect('')
+      setSeq(challenge)
+    })
+
+    return () => {
+      ignore = true
+    }
+  }, [seq, highestNote, lowestNote, noteCount, maxInterval])
 
   const isSameNote = (userInput: string, tonalNote: string) => {
     return userInput.toUpperCase() === tonalNote[0]
   }
 
   const handleGuess = (input: string) => {
+    // the next challenge may still be loading after the last note of the
+    // previous one was guessed correctly; ignore guesses until it arrives
+    if (correct.length >= seq.length) return
+
     if (isSameNote(input, seq[correct.length])) {
       setCorrect(correct + input)
       setIncorrect('')
@@ -58,10 +84,6 @@ const TextGame = ({
     }
   }
 
-  if (!seq?.length) {
-    next()
-  }
-
   const skip = () => {
     setScore(prev => prev - 10)
     next()
@@ -69,7 +91,11 @@ const TextGame = ({
 
   return (
     <>
-      <ActionIcon variant="subtle" onClick={() => backClicked()}>
+      <ActionIcon
+        variant="subtle"
+        onClick={() => backClicked()}
+        aria-label="Back"
+      >
         <IconArrowLeft></IconArrowLeft>
       </ActionIcon>
       <div

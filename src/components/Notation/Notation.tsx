@@ -33,9 +33,10 @@ export default function Notation({
     system
       .addStave({
         voices: [
-          score.voice(score.notes(sequence.join('/q, '), { clef }), {
-            time: sequence.length + '/4',
-          }),
+          score.voice(
+            score.notes(sequence.map(note => `${note}/q`).join(', '), { clef }),
+            { time: sequence.length + '/4' },
+          ),
         ],
       })
       .addClef(clef)

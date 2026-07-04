@@ -1,11 +1,10 @@
-const createAudioContext = () =>
-  new (window.AudioContext ||
-    (window as unknown as { webkitAudioContext: AudioContext })
-      .webkitAudioContext)()
+let audioContext: AudioContext | undefined
 
-const getAudioContext = (() => {
-  const audioContext = createAudioContext()
-  return () => audioContext
-})()
-
-export default getAudioContext
+export default function getAudioContext(): AudioContext {
+  if (!audioContext) {
+    // must be constructed lazily: browsers keep an AudioContext suspended
+    // unless it's created (or resumed) inside a user-gesture call stack
+    audioContext = new AudioContext()
+  }
+  return audioContext
+}

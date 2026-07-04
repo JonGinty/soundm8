@@ -71,13 +71,7 @@ const PianoNoteInput = ({ handleGuess, inputMode }: NoteInputProps) => {
     const containerWidth = containerRef.current?.offsetWidth || 0
     const keyboardWidth = whiteKeys.length * keyWidth
     setLeftOffset((containerWidth - keyboardWidth) / 2)
-  }, [
-    containerRef.current?.offsetWidth,
-    firstKeyRef.current?.offsetWidth,
-    viewportWidth,
-    octaves,
-    whiteKeys.length,
-  ])
+  }, [viewportWidth, octaves, whiteKeys.length])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
