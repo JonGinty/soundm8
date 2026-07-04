@@ -9,7 +9,7 @@ type TextGameSettings = {
   inputMode: TextGameInputMode
 }
 
-export type TextGameMode = 'treble' | 'bass'
+export type TextGameMode = 'treble' | 'bass' | 'text'
 export type TextGameScale = 'C major' | 'A minor'
 export type TextGameInputMode = 'text' | 'keyboardletters' | 'keyboard'
 

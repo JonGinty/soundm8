@@ -29,6 +29,8 @@ const TextGameConfig = ({ settings, handleChange }: TextGameConfigProps) => {
   }
 
   const ledgerWarning = () => {
+    if (settings.mode === 'text') return {}
+
     const warnings: string[] = []
     if (calculateLedgerLines(settings.highestNote, settings.mode) > 2)
       warnings.push(
@@ -54,8 +56,17 @@ const TextGameConfig = ({ settings, handleChange }: TextGameConfigProps) => {
     <Fieldset m="xs" legend="Settings">
       <Stack>
         <Select
-          label="Clef"
-          data={['treble', 'bass']}
+          label="Mode"
+          description={
+            settings.mode === 'text'
+              ? 'Computer keyboard input is kind of cheating in text mode.'
+              : undefined
+          }
+          data={[
+            { label: 'treble clef', value: 'treble' },
+            { label: 'bass clef', value: 'bass' },
+            { label: 'text', value: 'text' },
+          ]}
           value={settings.mode}
           onChange={v => handleChange({ mode: v as TextGameMode })}
         ></Select>

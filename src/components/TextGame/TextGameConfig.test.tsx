@@ -31,15 +31,30 @@ beforeEach(() => {
 })
 
 describe('TextGameConfig', () => {
-  it('changing the clef select calls handleChange with the new mode', () => {
+  it('changing the mode select calls handleChange with the new mode', () => {
     const handleChange = vi.fn()
     renderMantine(
       <TextGameConfig settings={baseSettings} handleChange={handleChange} />,
     )
 
-    selectOption('Clef', 'bass')
+    selectOption('Mode', 'bass clef')
 
     expect(handleChange).toHaveBeenCalledWith({ mode: 'bass' })
+  })
+
+  it('shows a gentle keyboard hint when text mode is selected', () => {
+    renderMantine(
+      <TextGameConfig
+        settings={{ ...baseSettings, mode: 'text' }}
+        handleChange={vi.fn()}
+      />,
+    )
+
+    expect(
+      screen.getByText(
+        'Computer keyboard input is kind of cheating in text mode.',
+      ),
+    ).toBeInTheDocument()
   })
 
   it('changing the scale select calls handleChange with the new scale', () => {
@@ -154,5 +169,16 @@ describe('TextGameConfig', () => {
     expect(
       screen.getByText('Warning: E6 has 3 ledger lines in treble clef'),
     ).toBeInTheDocument()
+  })
+
+  it('does not show ledger-line warnings in text mode', () => {
+    renderMantine(
+      <TextGameConfig
+        settings={{ ...baseSettings, mode: 'text', highestNote: 'E6' }}
+        handleChange={vi.fn()}
+      />,
+    )
+
+    expect(screen.queryByText(/Warning:/)).not.toBeInTheDocument()
   })
 })

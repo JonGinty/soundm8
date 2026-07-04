@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import nextChallenge from '../../engine/nextChallenge'
 import Notation from '../Notation/Notation'
-import { Button, Stack, ActionIcon } from '@mantine/core'
+import { Button, Stack, ActionIcon, Text } from '@mantine/core'
 import synthesize, { synthesizeSequence } from '../../engine/audio/synthesize'
 import TextGameSettings from './TextGame.settings'
 import { IconArrowLeft } from '@tabler/icons-react'
@@ -89,6 +89,20 @@ const TextGame = ({
     next()
   }
 
+  const challengeDisplay =
+    mode === 'text' ? (
+      <Text
+        data-testid="text-note-sequence"
+        fw={700}
+        size="xl"
+        style={{ minHeight: '90px' }}
+      >
+        {seq.join(' ')}
+      </Text>
+    ) : (
+      <Notation sequence={seq} clef={mode} />
+    )
+
   return (
     <>
       <ActionIcon
@@ -108,7 +122,7 @@ const TextGame = ({
         <Stack style={{ maxWidth: '200px' }}>
           <Stack style={{ flexGrow: 1 }}>
             <p>Score: {score}</p>
-            <Notation sequence={seq} clef={mode} />
+            {challengeDisplay}
             <p>
               <span style={{ color: '#11cc88' }}>{correct}</span>
               <span style={{ color: 'red' }}>{incorrect}</span>

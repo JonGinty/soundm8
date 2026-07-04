@@ -44,6 +44,18 @@ describe('TextGame', () => {
     })
   })
 
+  it('displays the challenge as plain text in text mode', async () => {
+    mockChallenge(['C4', 'D4'])
+    renderMantine(
+      <TextGame {...baseSettings} mode="text" backClicked={vi.fn()} />,
+    )
+
+    expect(await screen.findByTestId('text-note-sequence')).toHaveTextContent(
+      'C4 D4',
+    )
+    expect(screen.queryByTestId('notation-container')).not.toBeInTheDocument()
+  })
+
   it('awards points and does not lose progress on a correct guess', async () => {
     mockChallenge(['C4', 'D4'])
     renderMantine(
