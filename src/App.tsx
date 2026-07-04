@@ -30,6 +30,8 @@ function App() {
                   onClick={toggle}
                   hiddenFrom="sm"
                   size="sm"
+                  aria-label="Toggle navigation"
+                  aria-expanded={opened}
                 />
                 <HeaderLogo />
               </Group>

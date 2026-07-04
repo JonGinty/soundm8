@@ -38,6 +38,8 @@ const NoteRange = ({
         minRange={2}
         label={label}
         onChange={doChange}
+        thumbFromLabel="Lowest note"
+        thumbToLabel="Highest note"
       ></RangeSlider>
     </>
   )

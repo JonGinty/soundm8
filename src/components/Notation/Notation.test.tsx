@@ -53,3 +53,11 @@ test('handles empty sequence gracefully', () => {
   expect(notationElement).toBeInTheDocument()
   // Additional checks can be added here to verify the handling of empty sequence
 })
+
+test('renders a single-note sequence without crashing (regression: vexflow requires an explicit duration on every note, the last note in a /q-joined sequence never had one)', () => {
+  render(<Notation sequence={['C4']} clef="treble" />)
+  const notationElement = screen.getByTestId('notation-container')
+  expect(notationElement).toBeInTheDocument()
+  const svg = getSvg(notationElement)
+  expect(countNotes(svg)).toBe(1)
+})
