@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { TextInput, Button } from '@mantine/core'
 import { TextGameInputMode } from './TextGame.settings'
 import useViewportWidth from '../../utils/useViewportWidth'
+import MidiNoteController from '../../engine/midi/MidiNoteController'
 
 type NoteInputProps = {
   handleGuess: (guess: string) => void
@@ -53,6 +54,7 @@ const buildKeyboard = (octaves: number) => {
 const PianoNoteInput = ({ handleGuess, inputMode }: NoteInputProps) => {
   const [octaves, setOctaves] = useState<number>(1)
   const { whiteKeys, blackKeys } = buildKeyboard(octaves)
+  const handleGuessRef = useRef(handleGuess)
 
   const showNoteLabel = inputMode === 'keyboardletters'
 
@@ -62,6 +64,10 @@ const PianoNoteInput = ({ handleGuess, inputMode }: NoteInputProps) => {
   const firstKeyRef = useRef<HTMLButtonElement>(null)
 
   const viewportWidth = useViewportWidth()
+
+  useEffect(() => {
+    handleGuessRef.current = handleGuess
+  }, [handleGuess])
 
   useEffect(() => {
     const keyWidth = firstKeyRef.current?.offsetWidth || 40
@@ -93,7 +99,17 @@ const PianoNoteInput = ({ handleGuess, inputMode }: NoteInputProps) => {
     }
   }, [whiteKeys, handleGuess])
 
-  // todo: midi?
+  useEffect(() => {
+    const midi = new MidiNoteController()
+    const unsubscribe = midi.onNote(note => handleGuessRef.current(note))
+
+    midi.start()
+
+    return () => {
+      unsubscribe()
+      midi.dispose()
+    }
+  }, [])
 
   return (
     <div

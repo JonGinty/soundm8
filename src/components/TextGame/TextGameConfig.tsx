@@ -17,6 +17,7 @@ import { synthesizeSequence } from '../../engine/audio/synthesize'
 import calculateLedgerLines from '../../engine/notation/calculateLedgerLines'
 import { useId } from 'react'
 import SliderWithLabel from '../SliderWithLabel'
+import MidiInputTest from './MidiInputTest'
 
 const TextGameConfig = ({ settings, handleChange }: TextGameConfigProps) => {
   const testSfx = async () => {
@@ -102,6 +103,7 @@ const TextGameConfig = ({ settings, handleChange }: TextGameConfigProps) => {
             </Button>
           </Group>
         </Input.Wrapper>
+        <MidiInputTest />
         {/* TODO: this would maybe be better if we just select a number of ledger lines here instead of a note range */}
         <Input.Wrapper
           id={noteRangeId}

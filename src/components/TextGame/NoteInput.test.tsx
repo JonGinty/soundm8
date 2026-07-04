@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { screen, fireEvent, waitFor } from '@testing-library/react'
 import { renderMantine } from '../../utils/test-utils'
 import NoteInput from './NoteInput'
 
@@ -13,6 +13,10 @@ const setViewportWidth = (width: number) => {
 
 beforeEach(() => {
   setViewportWidth(1024)
+})
+
+afterEach(() => {
+  Reflect.deleteProperty(navigator, 'requestMIDIAccess')
 })
 
 describe('NoteInput - text mode', () => {
@@ -133,6 +137,30 @@ describe('NoteInput - piano keyboard mode', () => {
     fireEvent.keyDown(window, { key: 'q' })
 
     expect(handleGuess).not.toHaveBeenCalled()
+  })
+
+  it('calls handleGuess with MIDI note-on pitch classes', async () => {
+    const input = {
+      onmidimessage: null as ((event: { data: number[] }) => void) | null,
+    }
+    Object.defineProperty(navigator, 'requestMIDIAccess', {
+      configurable: true,
+      value: vi.fn(() =>
+        Promise.resolve({
+          inputs: new Map([['keyboard', input]]),
+          onstatechange: null,
+        }),
+      ),
+    })
+    const handleGuess = vi.fn()
+    renderMantine(
+      <NoteInput inputMode="keyboardletters" handleGuess={handleGuess} />,
+    )
+
+    await waitFor(() => expect(input.onmidimessage).toBeTruthy())
+    input.onmidimessage?.({ data: [0x90, 61, 100] })
+
+    expect(handleGuess).toHaveBeenCalledWith('C#')
   })
 
   it('recalculates layout on window resize without crashing, offering more octaves on a wider viewport', () => {
