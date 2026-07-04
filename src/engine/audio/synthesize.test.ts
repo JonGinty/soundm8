@@ -1,8 +1,12 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import synthesize, { synthesizeSequence } from './synthesize'
 import getAudioContext from './getAudioContext'
 
 describe('synthesize', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('resumes the audio context before playing (required for Safari/Firefox autoplay policy)', async () => {
     const audioCtx = getAudioContext()
     const resumeSpy = vi.spyOn(audioCtx, 'resume')

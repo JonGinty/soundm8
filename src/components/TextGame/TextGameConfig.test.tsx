@@ -22,7 +22,7 @@ const baseSettings: TextGameSettings = {
 }
 
 const selectOption = (comboboxName: string, optionName: string) => {
-  fireEvent.click(screen.getByRole('combobox', { name: comboboxName }))
+  fireEvent.click(screen.getByRole('textbox', { name: comboboxName }))
   fireEvent.click(screen.getByRole('option', { name: optionName }))
 }
 
